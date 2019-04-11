@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306//sshtestdb"></property>-->
+        <!--<property name="username" value="root"></property>-->
+        <!--<property name="password" value="1234567890"></property>-->
+    <!--</bean>-->
+    <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">-->
+
+        <!--<property name="dataSource"><ref bean="dataSource" /></property>-->
+
+        <!--<property name="annotatedClasses">-->
+            <!--<list>-->
+                <!--<value>com.entity.UserEntity</value>-->
+            <!--</list>-->
+        <!--</property>-->
+
+        <!--<property name="hibernateProperties">-->
+            <!--<props>-->
+                <!--<prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>-->
+                <!--<prop key="javax.persistence.validation.mode">none</prop>-->
+                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <!--<prop key="hibernate.format_sql">true</prop>-->
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="annotatedClasses">
+            <list>
+                <value>com.entity.UserEntity</value>
+            </list>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/sshtestdb</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+                <prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="javax.persistence.validation.mode">none</prop>
+                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.password">1234567890</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="userDAO" class="com.dao.UserDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="userService" class="com.service.UserService">
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
+
+    <bean id="userAction" class="com.action.LoginAction" scope="prototype">
+        <property name="userService" ref="userService"/>
+    </bean>
+</beans>
